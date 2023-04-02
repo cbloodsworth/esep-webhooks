@@ -1,9 +1,12 @@
-import json
+import os
+import requests
+
 
 def lambda_handler(event, context):
+    url = os.getenv('SLACK_URL')
     issue = event["issue"]["html_url"]
     payload: str = f"{{'text':'Issue Created: {issue}'}}"
-    return {
-            'statusCode': 200,
-            'body': json.dumps(payload)
-    }
+
+    r = requests.post(url, payload)
+
+    return r.text
